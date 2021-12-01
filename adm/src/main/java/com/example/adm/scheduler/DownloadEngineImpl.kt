@@ -48,6 +48,15 @@ class DownloadEngineImpl : DownloadEngine() {
     downloadPromise?.let { promise ->
       val jobs = okhttpDownloadPromise(promise.key, httpDownloadStrategy, downloadEngineScope)
       promises[downloadPromise.key] = jobs
+
+      while (true) {
+        if (jobs.map { it.isCompleted }.size == jobs.size) {
+          // all jbos are complete
+          break;
+        }
+      }
+
+      TODO("start the jobs to join the file parts")
     }
   }
 
